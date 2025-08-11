@@ -5,11 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItem } from './CartSlice';
 function ProductList({ onHomeClick }) {
     const dispatch = useDispatch();
-    const carts = useSelector(state => state.cart)
+    const cart = useSelector(state => state.cart.items)
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
-    console.log('carts', carts);
     const plantsArray = [
         {
             category: "Air Purifying Plants",
@@ -295,13 +294,14 @@ function ProductList({ onHomeClick }) {
                     <h2 className='product-category'>{plantItem.category}</h2>
                     <div  className='product-list'>
                     {plantItem.plants.map((plant,index) => {
+                       
                         return (
                             <div className='product-card' key={index}>
                                 <img className="product-image" src={plant.image} alt={plant.name}/>
                                 <h3 className='product-title'>{plant.name}</h3>
                                 <p>{plant.description}</p>
                                 <p className='product-cost'>{plant.cost}</p>
-                                <button className='product-button' onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                                <button className='product-button' disabled={addedToCart[plant.name]}  onClick={() => handleAddToCart(plant)}>{addedToCart[plant.name] ? 'Added To Cart' : 'Add to Cart'}</button>
                             </div>
                         )
                     })}
